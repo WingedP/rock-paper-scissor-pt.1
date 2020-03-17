@@ -1,22 +1,45 @@
-import React from 'react'   
+import React from 'react';
+import "./Toolbar.css";
 
 
-const choices = {
-    rock:"https://opengameart.org/sites/default/files/forum-attachments/very%20simple%20rock_0.png",
-    paper: "http://pngimagesfree.com/Paper/Thumb/blank-note-paper-free-clipa.png",
-    scissors: "http://www.pngmart.com/files/1/Scissors-PNG-Pic.png"
-  };
+const DEFAULT_IMG =
+  "https://i.pinimg.com/originals/55/77/ce/5577ce7d687b207626b3475584595daf.png";
+
+
+// const choices = {
+//     rock:"https://opengameart.org/sites/default/files/forum-attachments/very%20simple%20rock_0.png",
+//     paper: "http://pngimagesfree.com/Paper/Thumb/blank-note-paper-free-clipa.png",
+//     scissors: "http://www.pngmart.com/files/1/Scissors-PNG-Pic.png"
+//   };
   // choice object doesnt have imgURL as a key 
   // and choices is not props , its not from app.js, its the variable you define inside of this file
 
 export default function ChoiceCard(props) {
     console.log("Props:", props);
+
+    const won = props.title === props.previousWinner;
+    let className;
+    const hasPreviousGame =
+    props.previousWinner === "Computer" || props.previousWinner === "You";
+    if (hasPreviousGame) {className = won ? "winner" : "loser";}
+
+    let prompt;
+    if (won) {prompt = "You won! GGs"; className = won ? "winner" : "loser";} 
+    else if (props.previousWinner === "Tie") 
+    {prompt = "Tie... Not bad";} 
+    else if (props.previousWinner === null) 
+    {prompt = "Start";} 
+    else {prompt = "You lost! >__<";}
+
+
+
+
+
     return (
-        <div className={`choice-card ${props.winner ? 'winner' : 'loser'}`}>
-              <h1>{props.title}</h1>
-              <img src= {props.winner ? choices.rock : choices.scissors}
-            alt={props.title}/>
-              <h3>{props.winner ? 'winner' : 'you lost!'}</h3>
+        <div className={`choice-card ${className}`}>
+              <h1>{props.title}</h1>  
+              <img className="cardimg" src= {props.imgURL || DEFAULT_IMG} alt={props.title}/>
+              <h3>{prompt}</h3>
         </div>
     )
 }
